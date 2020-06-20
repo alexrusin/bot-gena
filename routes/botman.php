@@ -16,8 +16,12 @@ $botman->hears('Хорошо', function ($bot) {
     $bot->reply('У меня тоже всё клёво ;-)');
 });
 
-$botman->hears('Start conversation', BotManController::class . '@startConversation');
+$botman->hears('Что ты можешь(\?)?', BotManController::class . '@startConversation');
+
+$botman->on('conversation_started', function($payload, $bot) {
+    $bot->reply('Привет. Спроси у меня "Что ты можешь?"');
+});
 
 $botman->fallback(function ($bot) {
-    $bot->reply('Извини, я не понимаю ¯\_(ツ)_/¯');
+    $bot->reply('Извини, я не понимаю ¯\_(ツ)_/¯ Спроси у меня "Что ты можешь?"');
 });

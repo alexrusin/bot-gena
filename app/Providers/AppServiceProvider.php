@@ -18,7 +18,6 @@ class AppServiceProvider extends ServiceProvider
     {
         DriverManager::unloadDriver(ViberDriver::class);
         DriverManager::loadDriver(MyViberDriver::class);
-        \Log::info(json_encode(DriverManager::getAvailableDrivers()));
     }
 
     /**

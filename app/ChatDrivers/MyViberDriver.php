@@ -30,7 +30,7 @@ class MyViberDriver extends ViberDriver
                 }
                 $actionBody = $action['additional']['url'] ?? $action['value'] ?? $action['text'];
                 $silent = isset($action['additional']['url']);
-                $keyboard->addButton($text, $actionType, $actionBody, 'regular', null, 6, $silent);
+                $keyboard->addButton($text, $actionType, $actionBody, 'large', '#95d3de', 5, $silent);
             }
             return $keyboard->jsonSerialize();
         }

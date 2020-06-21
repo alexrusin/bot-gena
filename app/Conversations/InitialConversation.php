@@ -2,6 +2,8 @@
 
 namespace App\Conversations;
 
+use App\Birthday;
+use App\ChatUser;
 use Illuminate\Foundation\Inspiring;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
@@ -15,12 +17,12 @@ class InitialConversation extends Conversation
      */
     public function askReason()
     {
-        $question = Question::create('Пока я могу рассказать анекдот. Рассказать?')
+        $question = Question::create('Я могу')
             ->fallback('Unable to ask question')
             ->callbackId('ask_reason')
             ->addButtons([
-                Button::create('Да')->value('joke'),
-                Button::create('Нет')->value('quote')
+                Button::create('Рассказать анекдот')->value('joke'),
+                Button::create('Напомнить о дне рождении')->value('birthday_reminder')
             ]);
 
         return $this->ask($question, function (Answer $answer) {
@@ -33,7 +35,31 @@ class InitialConversation extends Conversation
                 $joke = str_replace('<content>', '', $joke);
                 $joke = str_replace('</content>', '', $joke);
                 $this->say(mb_convert_encoding($joke, "utf-8", "windows-1251"));
-            } else {
+            } elseif ($answer->getText() === 'birthday_reminder') {
+                $payload = $this->getBot()->getMessage()->getPayload()->all();
+                $chatUserId = $payload['sender']['id'] ?? null;
+                $chatUser = ChatUser::with('birthdays')->whereChatUserId($chatUserId)->first();
+                if (!$chatUser) {
+                    $this->say('Извини, у меня нет информации о тебе в база данных');
+                    return;
+                }
+
+                if ($chatUser->birthdays->isEmpty()) {
+                    $this->say('У тебя нет в дней рождений в списке.  Напиши "Добавить день рождения"');
+                    return;
+                }
+
+                $birthdaysCollection = $chatUser->birthdays->map(function($item) {
+                    return $item->name . ' - ' . $item->birthday->format('d/m');
+                });
+
+                $birthdaysCollection->prepend('Список дней рождений:');
+
+                $birthdaysString = implode("\n", $birthdaysCollection->toArray());
+
+                $this->say($birthdaysString);
+            } 
+            else {
                 $this->say(Inspiring::quote());
             }
            

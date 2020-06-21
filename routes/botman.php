@@ -17,6 +17,8 @@ $botman->hears('Хорошо', function ($bot) {
 });
 
 $botman->hears('Что ты можешь(\?)?', BotManController::class . '@startConversation');
+$botman->hears('Добавить день рождения', BotManController::class . '@addBirthdayConversation');
+$botman->hears('Удалить день рождения', BotManController::class . '@deleteBirthdayConversation');
 
 $botman->on('subscribed', 'App\Http\Controllers\ChatUserController@create');
 $botman->on('unsubscribed', 'App\Http\Controllers\ChatUserController@delete');

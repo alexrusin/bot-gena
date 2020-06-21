@@ -53,4 +53,16 @@ class ChatUser extends Model
             return null;
         }    
     }
+
+    public function getBirthdaysList(): string
+    {
+        $birthdaysCollection = $this->birthdays->map(function($item) {
+            return $item->name . ' - ' . $item->birthday->format('d/m');
+        });
+
+        $birthdaysCollection->prepend("Твой список дней рождений:\n");
+        $birthdaysCollection->push("\nНапиши \"Добавить день рождения\" или \"Удалить день рождения\"");
+
+        return implode("\n", $birthdaysCollection->toArray());
+    }
 }

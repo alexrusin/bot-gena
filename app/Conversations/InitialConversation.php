@@ -2,7 +2,6 @@
 
 namespace App\Conversations;
 
-use App\Birthday;
 use App\ChatUser;
 use Illuminate\Foundation\Inspiring;
 use BotMan\BotMan\Messages\Incoming\Answer;
@@ -49,15 +48,9 @@ class InitialConversation extends Conversation
                     return;
                 }
 
-                $birthdaysCollection = $chatUser->birthdays->map(function($item) {
-                    return $item->name . ' - ' . $item->birthday->format('d/m');
-                });
+                $birthdaysList = $chatUser->getBirthdaysList();
 
-                $birthdaysCollection->prepend('Список дней рождений:');
-
-                $birthdaysString = implode("\n", $birthdaysCollection->toArray());
-
-                $this->say($birthdaysString);
+                $this->say($birthdaysList);
             } 
             else {
                 $this->say(Inspiring::quote());

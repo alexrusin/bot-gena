@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Conversations\AddBirthdayConversation;
+use App\Conversations\DeleteBirthdayConversation;
 use BotMan\BotMan\BotMan;
 use App\Conversations\InitialConversation;
 
@@ -31,5 +33,15 @@ class BotManController extends Controller
     public function startConversation(BotMan $bot)
     {
         $bot->startConversation(new InitialConversation());
+    }
+
+    public function addBirthdayConversation(BotMan $bot)
+    {
+        $bot->startConversation(new AddBirthdayConversation());
+    }
+
+    public function deleteBirthdayConversation(BotMan $bot)
+    {
+        $bot->startConversation(new DeleteBirthdayConversation());
     }
 }

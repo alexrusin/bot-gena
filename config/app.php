@@ -66,6 +66,7 @@ return [
     */
 
     'timezone' => 'UTC',
+    'notify_timezone' => env('NOTIFY_TIMEZONE', 'UTC'),
 
     /*
     |--------------------------------------------------------------------------

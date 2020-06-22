@@ -18,6 +18,7 @@ class CreateBirthdaysTable extends Migration
             $table->unsignedInteger('chat_user_id');
             $table->string('name');
             $table->dateTime('birthday');
+            $table->dateTime('reminded_at')->nullable();
             $table->timestamps();
 
             $table->foreign('chat_user_id')

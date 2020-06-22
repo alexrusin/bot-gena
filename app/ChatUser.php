@@ -45,7 +45,7 @@ class ChatUser extends Model
 
         try {
             return $this->birthdays()->create([
-                'name' => $name,
+                'name' => substr($name, 0, 250),
                 'birthday' => $birthdayDate
             ]);
         } catch (Exception $e) {
@@ -57,7 +57,7 @@ class ChatUser extends Model
     public function getBirthdaysList(): string
     {
         $birthdaysCollection = $this->birthdays->map(function($item) {
-            return $item->name . ' - ' . $item->birthday->format('d/m');
+            return $item->name . ' ' . $item->birthday->format('d/m');
         });
 
         $birthdaysCollection->prepend("Твой список дней рождений:\n");

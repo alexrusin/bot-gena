@@ -47,7 +47,7 @@ class SendBirthdayReminders extends Command
     {
         $this->client = new Client([
             'base_uri' => 'https://chatapi.viber.com/pa/',
-            'timeout'  => 5.0,
+            'timeout' => 5.0,
             'verify' => false,
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -57,8 +57,8 @@ class SendBirthdayReminders extends Command
 
         Log::info('Start sending reminders');
 
-        ChatUser::with('birthdays')->chunk(500, function($users) {
-            $users->each(function($user) {
+        ChatUser::with('birthdays')->chunk(500, function ($users) {
+            $users->each(function ($user) {
                 $this->sendReminder($user);
             });
         });
@@ -68,7 +68,7 @@ class SendBirthdayReminders extends Command
 
     protected function sendReminder(ChatUser $user): void
     {
-        $user->birthdays->each(function($birthday) use ($user) {
+        $user->birthdays->each(function ($birthday) use ($user) {
             $this->sendBirthdayReminder($birthday, $user);
         });
     }
@@ -81,14 +81,14 @@ class SendBirthdayReminders extends Command
     }
 
     protected function needToSendReminder(Birthday $birthday): bool
-    {   
+    {
         return $birthday->birthday->isBirthday() && $this->betweenHours() && !$birthday->alreadyReminded();
     }
 
     protected function betweenHours(): bool
     {
-        $start = Carbon::now(config('app.notify_timezone'))->startOfDay()->addHours(17)->addMinutes(30);
-        $end = Carbon::now(config('app.notify_timezone'))->startOfDay()->addHours(19)->addMinutes(55);
+        $start = Carbon::now(config('app.notify_timezone'))->startOfDay()->addHours(8)->addMinutes(30);
+        $end = Carbon::now(config('app.notify_timezone'))->startOfDay()->addHours(10)->addMinutes(30);
         $now = Carbon::now(config('app.notify_timezone'));
 
         return $now->between($start, $end, true);
@@ -96,18 +96,17 @@ class SendBirthdayReminders extends Command
 
     protected function sendReminderTo(ChatUser $user, Birthday $birthday): void
     {
-        Log::info("Sending reminder to $user->name");
+        Log::info("Sending reminder to {$user->name} for birthday of {$birthday->name}");
         $response = $this->client->post('send_message', [
-                'json' => [
-                    'receiver' => $user->chat_user_id,
-                    'type' => 'text',
-                    'text' => "Сегодня {$birthday->name} празднует день рождения"
-                ]
+            'json' => [
+                'receiver' => $user->chat_user_id,
+                'type' => 'text',
+                'text' => "Сегодня {$birthday->name} празднует день рождения"
+            ]
         ]);
 
         Log::info($response->getBody()->getContents());
         $birthday->reminded_at = Carbon::now();
         $birthday->save();
-
     }
 }

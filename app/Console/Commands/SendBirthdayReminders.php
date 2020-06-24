@@ -75,28 +75,28 @@ class SendBirthdayReminders extends Command
 
     protected function sendBirthdayReminder(Birthday $birthday, ChatUser $user): void
     {
-        if ($this->needToSendReminder($birthday)) {
+        if ($this->needToSendReminder($user, $birthday)) {
             $this->sendReminderTo($user, $birthday);
         }
     }
 
-    protected function needToSendReminder(Birthday $birthday): bool
+    protected function needToSendReminder(ChatUser $user, Birthday $birthday): bool
     {
-        return $birthday->birthday->isBirthday() && $this->betweenHours() && !$birthday->alreadyReminded();
+        return $birthday->birthday->isBirthday() && $this->betweenHours($user) && !$birthday->alreadyReminded();
     }
 
-    protected function betweenHours(): bool
+    protected function betweenHours($user): bool
     {
-        $start = Carbon::now(config('app.notify_timezone'))->startOfDay()->addHours(8)->addMinutes(30);
-        $end = Carbon::now(config('app.notify_timezone'))->startOfDay()->addHours(10)->addMinutes(30);
-        $now = Carbon::now(config('app.notify_timezone'));
+        $start = Carbon::now($user->timezone)->startOfDay()->addHours(8)->addMinutes(30);
+        $end = Carbon::now($user->timezone)->startOfDay()->addHours(10)->addMinutes(30);
+        $now = Carbon::now($user->timezone);
 
         return $now->between($start, $end, true);
     }
 
     protected function sendReminderTo(ChatUser $user, Birthday $birthday): void
     {
-        Log::info("Sending reminder to {$user->name} for birthday of {$birthday->name}");
+        Log::info("Sending reminder to {$user->name} ({$user->timezone}) for birthday of {$birthday->name}");
         $response = $this->client->post('send_message', [
             'json' => [
                 'receiver' => $user->chat_user_id,

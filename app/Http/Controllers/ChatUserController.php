@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\ChatUser;
-use Carbon\Carbon;
+use App\Utils;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ChatUserController extends Controller
@@ -30,12 +29,15 @@ class ChatUserController extends Controller
                     'avatar' => $user['avatar'],
                     'country' => $user['country'],
                     'language' => $user['language'],
-                    'api_version' => $user['api_version']
+                    'api_version' => $user['api_version'],
+                    'timezone' => Utils::getCountriesTimezone($user['country'])
                 ]);
             } catch (Exception $e) {
                 Log::error($e);
             }
         }
+
+        $bot->reply('Привет. Как дела?');
     }
 
     public function delete($payload, $bot)

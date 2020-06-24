@@ -44,7 +44,7 @@ class InitialConversation extends Conversation
                 }
 
                 if ($chatUser->birthdays->isEmpty()) {
-                    $this->say('У тебя нет в дней рождений в списке.  Напиши "Добавить день рождения"');
+                    $this->say('У тебя нет дней рождений в списке.  Напиши "Добавить день рождения"');
                     return;
                 }
 
@@ -53,7 +53,7 @@ class InitialConversation extends Conversation
                 $this->say($birthdaysList);
             } 
             else {
-                $this->say(Inspiring::quote());
+                $this->say('Напиши "меню", а потом сделай нужный выбор, нажав на кнопку');
             }
            
         });

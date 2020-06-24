@@ -22,7 +22,7 @@ $botman->hears('(так себе|плохо|хреново|хуёво|хуево
     $bot->reply('Ничего, всё образуется.  Проблем нет только у тех людей, которые сейчас на кладбище ;-)');
 });
 
-$botman->hears('Что ты можешь(\?)?', BotManController::class . '@startConversation');
+$botman->hears('Меню', BotManController::class . '@startConversation');
 $botman->hears('Добавить день рождения', BotManController::class . '@addBirthdayConversation');
 $botman->hears('Удалить день рождения', BotManController::class . '@deleteBirthdayConversation');
 

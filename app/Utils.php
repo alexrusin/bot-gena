@@ -10,8 +10,9 @@ class Utils
             'RU' => 'Europe/Moscow',
             'BY' => 'Europe/Minsk',
             'US' => 'America/New_York',
-            'DE' => 'Europe/Zurich',
-            'NL' => 'Europe/Zurich'
+            'DE' => 'Europe/Berlin',
+            'NL' => 'Europe/Amsterdam',
+            'IL' => 'Asia/Jerusalem'
         ];
 
         return $countryTimezone[$countryCode] ?? 'Europe/Moscow';

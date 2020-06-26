@@ -26,7 +26,7 @@ class ChatUserController extends Controller
                 ChatUser::create([
                     'chat_user_id' => $user['id'],
                     'name' => $user['name'],
-                    'avatar' => $user['avatar'],
+                    'avatar' => $user['avatar'] ?? null,
                     'country' => $user['country'],
                     'language' => $user['language'],
                     'api_version' => $user['api_version'],

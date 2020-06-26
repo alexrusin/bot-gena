@@ -17,4 +17,15 @@ class Utils
 
         return $countryTimezone[$countryCode] ?? 'Europe/Moscow';
     }
+
+    public static function tellAJoke()
+    {
+        $joke = file_get_contents('http://rzhunemogu.ru/Rand.aspx?CType=1');
+        $joke = str_replace('<?xml version="1.0" encoding="utf-8"?>','', $joke);
+        $joke = str_replace('<root>', '', $joke);
+        $joke = str_replace('</root>', '', $joke);
+        $joke = str_replace('<content>', '', $joke);
+        $joke = str_replace('</content>', '', $joke);
+        return mb_convert_encoding($joke, "utf-8", "windows-1251");
+    }
 }

@@ -3,6 +3,7 @@
 use App\ChatUser;
 use App\Conversations\InitialConversation;
 use App\Http\Controllers\BotManController;
+use App\Utils;
 
 $botman = resolve('botman');
 
@@ -24,13 +25,7 @@ $botman->hears('(так себе|плохо|хреново|хуёво|хуево
 });
 
 $botman->hears('(Рассказать анекдот|анекдот)', function ($bot) {
-    $joke = file_get_contents('http://rzhunemogu.ru/Rand.aspx?CType=1');
-    $joke = str_replace('<?xml version="1.0" encoding="utf-8"?>','', $joke);
-    $joke = str_replace('<root>', '', $joke);
-    $joke = str_replace('</root>', '', $joke);
-    $joke = str_replace('<content>', '', $joke);
-    $joke = str_replace('</content>', '', $joke);
-    $bot->reply(mb_convert_encoding($joke, "utf-8", "windows-1251"));
+    $bot->reply(Utils::tellAJoke());
 });
 
 $botman->hears('Напомнить о дне рождении', function($bot) {

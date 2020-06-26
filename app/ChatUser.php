@@ -22,7 +22,7 @@ class ChatUser extends Model
 
     public function birthdays()
     {
-        return $this->hasMany(Birthday::class);
+        return $this->hasMany(Birthday::class)->orderBy('birthday');
     }
 
     public function addBirthdays(array $birthdays)

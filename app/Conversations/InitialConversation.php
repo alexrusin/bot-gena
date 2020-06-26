@@ -16,7 +16,7 @@ class InitialConversation extends Conversation
      */
     public function askReason()
     {
-        $question = Question::create('Я могу')
+        $question = Question::create("Нажми на кнопку - получишь результат\nИ твоя мечта осуществится ;-)")
             ->fallback('Unable to ask question')
             ->callbackId('ask_reason')
             ->addButtons([

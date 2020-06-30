@@ -32,12 +32,13 @@ class ChatUserController extends Controller
                     'api_version' => $user['api_version'],
                     'timezone' => Utils::getCountriesTimezone($user['country'])
                 ]);
+
+                $bot->reply('Привет. Я могу напомнить о дне рождении твоих близких и друзей или рассказать анекдот. Напиши "меню"');
+
             } catch (Exception $e) {
                 Log::error($e);
             }
         }
-
-        $bot->reply('Привет. Как дела?');
     }
 
     public function delete($payload, $bot)

@@ -41,7 +41,7 @@ class ChatUser extends Model
         $name = implode(' ', $data);
 
 
-        $birthdayDate = Carbon::createFromFormat('d/m', $date)->startOfDay();
+        $birthdayDate = Carbon::createFromFormat('d/m', $date)->startOfDay()->year('2020');
 
         try {
             return $this->birthdays()->create([
